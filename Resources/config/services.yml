@@ -1,0 +1,6 @@
+services:
+    ferchoz_web_entity.admin.entity:
+        class: Ferchoz\WebEntityBundle\Admin\EntityAdmin
+        arguments: [~, Ferchoz\WebEntityBundle\Entity\Entity, FerchozWebEntityBundle:EntityAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Entity}

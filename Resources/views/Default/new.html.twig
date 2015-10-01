@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+
+    <h1>Create a new Entity</h1>
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    <div class="form-group">
+        {{ form_label(form.name, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+
+    <h3>Fields</h3>
+    <div id="holder"></div>
+    {{ form_end(form) }}
+    <div style="display: none">
+        <fieldset id="prototype" class="form-inline">
+            <div class="form-group col-md-3">
+                <label class="label-control sr-only required" for="entity_fields___name___name">Name</label>
+                <input type="text" id="entity_fields___name___name" name="entity[fields][__name__][name]" required="required" placeholder="Name" class="form-control">
+            </div>
+            <div class="form-group col-md-3">
+                <label class="label-control sr-only required" for="entity_fields___name___type">Type</label>
+                <select id="entity_fields___name___type" name="entity[fields][__name__][type]" class="form-control"><option value="string">string</option><option value="text">text</option></select>
+            </div>
+            <div class="form-group col-md-3">
+                <label class="label-control sr-only required" for="entity_fields___name___length">Length</label>
+                <input type="text" id="entity_fields___name___length" name="entity[fields][__name__][length]" required="required" placeholder="Length" class="form-control">
+            </div>
+            <div class="form-group col-md-3">
+                <a href="#" class="remove-tag btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove Field</a>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script>
+    // setup an "add a tag" link
+    var $addTagLink = $('<a href="#" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a field</a>');
+    var $newLinkLi = $('<div></div>').append($addTagLink);
+
+    jQuery(document).ready(function() {
+        // Get the ul that holds the collection of tags
+        var $collectionHolder = $('#holder');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTagLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new tag form (see code block below)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
+
+
+    });
+
+    function addTagForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        //var prototype = $collectionHolder.data('prototype');
+        var prototype = $("#prototype").prop('outerHTML');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        // Replace '$$name$$' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<div></div>').append(newForm);
+
+        // also add a remove button, just for this example
+        //$newFormLi.append('<a href="#" class="remove-tag btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove Field</a>');
+
+        $newLinkLi.before($newFormLi);
+
+        // handle the removal, just for this example
+        $('.remove-tag').click(function(e) {
+            e.preventDefault();
+
+            $(this).parent().parent().remove();
+
+            return false;
+        });
+    }
+</script>
+</body>
+</html>
+
