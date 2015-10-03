@@ -21,37 +21,34 @@
 <div class="container">
 
     <h1>Create a new Entity</h1>
-    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-    <div class="form-group">
-        {{ form_label(form.name, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        <div class="col-sm-10">
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage|raw }}
         </div>
-    </div>
+    {% endfor %}
+    {{ form_start(form) }}
+    <fieldset class="form-horizontal">
+        <div class="form-group">
+            {{ form_label(form.bundle, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-sm-5">
+                {{ form_widget(form.bundle, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div><div class="form-group">
+            {{ form_label(form.name, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-sm-5">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+    </fieldset>
 
     <h3>Fields</h3>
-    <div id="holder"></div>
-    {{ form_end(form) }}
-    <div style="display: none">
-        <fieldset id="prototype" class="form-inline">
-            <div class="form-group col-md-3">
-                <label class="label-control sr-only required" for="entity_fields___name___name">Name</label>
-                <input type="text" id="entity_fields___name___name" name="entity[fields][__name__][name]" required="required" placeholder="Name" class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <label class="label-control sr-only required" for="entity_fields___name___type">Type</label>
-                <select id="entity_fields___name___type" name="entity[fields][__name__][type]" class="form-control"><option value="string">string</option><option value="text">text</option></select>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="label-control sr-only required" for="entity_fields___name___length">Length</label>
-                <input type="text" id="entity_fields___name___length" name="entity[fields][__name__][length]" required="required" placeholder="Length" class="form-control">
-            </div>
-            <div class="form-group col-md-3">
-                <a href="#" class="remove-tag btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove Field</a>
-            </div>
-        </fieldset>
+    <div id="collectionContainer"
+         data-prototype="
+         {% filter escape %}
+             {{ include('FerchozWebEntityBundle:Default:prototype.html.twig', { 'form': form.fields.vars.prototype }) }}
+         {% endfilter %}">
     </div>
-
+    {{ form_end(form) }}
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -65,7 +62,7 @@
 
     jQuery(document).ready(function() {
         // Get the ul that holds the collection of tags
-        var $collectionHolder = $('#holder');
+        var $collectionHolder = $('#collectionContainer');
 
         // add the "add a tag" anchor and li to the tags ul
         $collectionHolder.append($newLinkLi);
@@ -87,8 +84,8 @@
 
     function addTagForm($collectionHolder, $newLinkLi) {
         // Get the data-prototype explained earlier
-        //var prototype = $collectionHolder.data('prototype');
-        var prototype = $("#prototype").prop('outerHTML');
+        var prototype = $collectionHolder.data('prototype');
+        //var prototype = $("#prototype").prop('outerHTML');
 
         // get the new index
         var index = $collectionHolder.data('index');
@@ -106,7 +103,7 @@
         // also add a remove button, just for this example
         //$newFormLi.append('<a href="#" class="remove-tag btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove Field</a>');
 
-        $newLinkLi.before($newFormLi);
+        $collectionHolder.append($newFormLi);
 
         // handle the removal, just for this example
         $('.remove-tag').click(function(e) {

@@ -7,6 +7,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FieldType extends AbstractType
 {
+    private $types;
+
+    public function __construct($types){
+        $this->types   = $types;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -17,11 +23,12 @@ class FieldType extends AbstractType
                 ),
             ))
             ->add('type', 'choice', array(
-                'choices' => array("string"=>"string", "text"=>"text"),
+                'choices' => $this->types,
+                'empty_value' => 'Select one'
             ))
-            ->add('length',"text",array(
+            ->add('length', "number", array(
                 'attr' => array(
-                    'placeholder' => 'Length'
+                    'placeholder' => 'Length of type'
                 ),
             ))
         ;

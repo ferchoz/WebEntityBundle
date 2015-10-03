@@ -9,6 +9,11 @@ class Entity
     /**
      * @var string
      */
+    private $bundle;
+
+    /**
+     * @var string
+     */
     private $name;
 
     /**
@@ -19,6 +24,22 @@ class Entity
     public function __construct()
     {
         $this->fields = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBundle()
+    {
+        return $this->bundle;
+    }
+
+    /**
+     * @param string $bundle
+     */
+    public function setBundle($bundle)
+    {
+        $this->bundle = $bundle;
     }
 
     /**

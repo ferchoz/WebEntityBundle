@@ -1,0 +1,17 @@
+<fieldset id="prototype" class="form-inline">
+    <div class="form-group">
+        {{ form_label(form.name, null, {'label_attr': {'class': 'label-control sr-only'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.type, null, {'label_attr': {'class': 'label-control sr-only'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.length, null, {'label_attr': {'class': 'label-control sr-only'}}) }}
+        {{ form_widget(form.length, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        <a href="#" class="remove-tag btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove Field</a>
+    </div>
+</fieldset>

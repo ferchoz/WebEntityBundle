@@ -36,9 +36,9 @@ class Field
     private $type;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="length", type="string", length=255)
+     * @ORM\Column(name="length", type="integer")
      */
     private $length;
 
@@ -102,7 +102,7 @@ class Field
     /**
      * Set length
      *
-     * @param string $length
+     * @param integer $length
      * @return Field
      */
     public function setLength($length)
@@ -115,7 +115,7 @@ class Field
     /**
      * Get length
      *
-     * @return string 
+     * @return integer
      */
     public function getLength()
     {

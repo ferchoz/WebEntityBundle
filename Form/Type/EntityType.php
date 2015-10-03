@@ -7,17 +7,31 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntityType extends AbstractType
 {
+    private $bundles;
+    private $types;
+
+    public function __construct($bundles, $types){
+        $this->bundles = $bundles;
+        $this->types   = $types;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('bundle', 'choice', array(
+                'required' => true,
+                'choices' => $this->bundles,
+                'empty_value' => 'Select one'
+            ))
             ->add('name', 'text', array(
                 'required' => true,
+                'label' => 'Entity name',
                 'attr' => array(
                     'placeholder' => 'Name'
                 ),
             ))
             ->add('fields', 'collection', array(
-                'type'      => new FieldType(),
+                'type'      => new FieldType($this->types),
                 'allow_add' => true,
             ))
             ->add('save', 'submit', array(
